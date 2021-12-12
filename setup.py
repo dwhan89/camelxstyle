@@ -6,6 +6,7 @@ import setuptools
 from numpy.distutils.core import setup, Extension, build_ext, build_src
 import versioneer
 import os, sys
+import versioneer
 
 requirements =  ['numpy>=1.16',
                  'astropy>=2.0',
@@ -47,6 +48,7 @@ setup(
     name='camelxstyle',
     url='https://github.com/simonsobs/camelxstyle',
     version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
 )
 
 print('\n[setup.py request was successful.]')
