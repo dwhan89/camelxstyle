@@ -1,0 +1,2 @@
+include versioneer.py
+include camelxstyle/_version.py
