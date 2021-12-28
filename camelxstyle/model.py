@@ -4,6 +4,7 @@ import math
 import torch
 from torch import nn
 from torch.nn import functional as F
+from op import fused_leaky_relu
 
 
 class EqualLinear(nn.Module):
