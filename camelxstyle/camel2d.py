@@ -1,11 +1,12 @@
-import numpy as np
-import lmdb as lmdb
 import os
+
+import lmdb as lmdb
+import numpy as np
 from torch.utils.data import Dataset
+
 
 class Camel2DField(Dataset):
     def __init__(self, data_dir, field_idx, sim_type, set_idx, transforms=[]):
-
         self.dataset_dir = os.path.join(data_dir, f"Maps_{field_idx}_{sim_type}_{set_idx}_z=0.00")
         self.lmdb_env = lmdb.open(self.dataset_dir, readonly=True, lock=False)
         self.shape = (256, 256)
@@ -16,7 +17,7 @@ class Camel2DField(Dataset):
         return self.lmdb_env.stat()
 
     def get_label(self, idx):
-        return self.labels[idx//15, :].copy()
+        return self.labels[idx // 15, :].copy()
 
     def describe(self, idx):
         label = self.get_label(idx)
@@ -39,4 +40,3 @@ class Camel2DField(Dataset):
             data = transform(data)
         label = self.get_label(idx)
         return [data, label]
-
