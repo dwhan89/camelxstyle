@@ -1,15 +1,18 @@
 # Code borrowed from https://github.com/rosinality/stylegan2-pytorch
 
 import math
+import os
 import random
 
 import torch
 import tqdm
-from torch import autograd
+from torch import autograd, optim, nn
 from torch.nn import functional as F
-from torchvision import utils
+from torch.utils import data
+from torchvision import utils, transforms
 
-from camelxstyle.distributed import get_rank, reduce_sum, get_world_size, reduce_loss_dict
+import camelxstyle.swagan as swagan
+from camelxstyle.distributed import get_rank, reduce_sum, get_world_size, reduce_loss_dict, synchronize
 from camelxstyle.nonleaky import augment, AdaptiveAugment
 from camelxstyle.op import conv2d_gradfix
 
@@ -25,6 +28,15 @@ def sample_data(loader):
     while True:
         for batch in loader:
             yield batch
+
+
+def data_sampler(dataset, shuffle, distributed):
+    if distributed:
+        return data.distributed.DistributedSampler(dataset, shuffle=shuffle)
+    if shuffle:
+        return data.RandomSampler(dataset)
+    else:
+        return data.SequentialSampler(dataset)
 
 
 def requires_grad(model, flag=True):
@@ -292,3 +304,125 @@ def train(args, loader, generator, discriminator, g_optim, d_optim, g_ema, devic
                     },
                     f"checkpoint/{str(i).zfill(6)}.pt",
                 )
+
+
+class Dummy(object):
+    pass
+
+
+##### if __name__ == "__main__":
+args = Dummy()
+
+device = "cuda"
+args.iter = 800000  # "total training iterations"
+args.batch = 16  # "batch sizes for each gpus"
+args.n_sample = 64  # "number of the samples generated during training"
+args.size = 256  # "image sizes for the model"
+args.r1 = 10.  # "weight of the r1 regularization"
+args.path_regularize = 2  # "weight of the path length regularization"
+args.path_batch_shrink = 2  # batch size reducing factor for the path length regularization (reduce memory consumption)
+args.d_reg_every = 16  # interval of the applying r1 regularization
+args.g_reg_every = 4  # interval of the applying path length regularization
+args.mixing = 0.9  # probability of latent code mixing
+args.ckpt = None  # "path to the checkpoints to resume training"
+args.lr = 0.002  # learning rate
+args.channel_multiplier = 2  # channel multiplier factor for the model. config-f = 2, else = 1
+args.wandb = True  # use weights and biases logging
+args.local_rank = 0  # local rank for distributed training
+args.augment = True  # apply non leaking augmentation
+args.augment_p = 0.  # "probability of applying augmentation. 0 = use adaptive augmentation"
+args.ada_target = 0.6  # target augmentation probability for adaptive augmentation
+args.ada_length = 500 * 1000  # target duration to reach augmentation probability for adaptive augmentation
+args.ada_every = 256  # "probability update interval of the adaptive augmentation"
+args.latent = 512
+args.n_mlp = 8
+args.start_iter = 0
+
+n_gpu = 4
+args.distributed = n_gpu > 1
+
+if args.distributed:
+    torch.cuda.set_device(args.local_rank)
+    torch.distributed.init_process_group(backend="nccl", init_method="env://")
+    synchronize()
+
+generator = swagan.Generator(
+    args.size, args.latent, args.n_mlp, channel_multiplier=args.channel_multiplier
+).to(device)
+discriminator = swagan.Discriminator(
+    args.size, channel_multiplier=args.channel_multiplier
+).to(device)
+g_ema = swagan.Generator(
+    args.size, args.latent, args.n_mlp, channel_multiplier=args.channel_multiplier
+).to(device)
+g_ema.eval()
+accumulate(g_ema, generator, 0)
+
+g_reg_ratio = args.g_reg_every / (args.g_reg_every + 1)
+d_reg_ratio = args.d_reg_every / (args.d_reg_every + 1)
+
+g_optim = optim.Adam(
+    generator.parameters(),
+    lr=args.lr * g_reg_ratio,
+    betas=(0 ** g_reg_ratio, 0.99 ** g_reg_ratio),
+)
+d_optim = optim.Adam(
+    discriminator.parameters(),
+    lr=args.lr * d_reg_ratio,
+    betas=(0 ** d_reg_ratio, 0.99 ** d_reg_ratio),
+)
+
+if args.ckpt is not None:
+    print("load model:", args.ckpt)
+
+    ckpt = torch.load(args.ckpt, map_location=lambda storage, loc: storage)
+
+    try:
+        ckpt_name = os.path.basename(args.ckpt)
+        args.start_iter = int(os.path.splitext(ckpt_name)[0])
+
+    except ValueError:
+        pass
+
+    generator.load_state_dict(ckpt["g"])
+    discriminator.load_state_dict(ckpt["d"])
+    g_ema.load_state_dict(ckpt["g_ema"])
+
+    g_optim.load_state_dict(ckpt["g_optim"])
+    d_optim.load_state_dict(ckpt["d_optim"])
+
+    if args.distributed:
+        generator = nn.parallel.DistributedDataParallel(
+            generator,
+            device_ids=[args.local_rank],
+            output_device=args.local_rank,
+            broadcast_buffers=False,
+        )
+
+        discriminator = nn.parallel.DistributedDataParallel(
+            discriminator,
+            device_ids=[args.local_rank],
+            output_device=args.local_rank,
+            broadcast_buffers=False,
+        )
+
+transform = transforms.Compose(
+    [
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5), inplace=True),
+    ]
+)
+
+dataset = None
+loader = data.DataLoader(
+    dataset,
+    batch_size=args.batch,
+    sampler=data_sampler(dataset, shuffle=True, distributed=args.distributed),
+    drop_last=True,
+)
+
+if get_rank() == 0 and wandb is not None and args.wandb:
+    wandb.init(project="camelxstyle")
+
+train(args, loader, generator, discriminator, g_optim, d_optim, g_ema, device)
