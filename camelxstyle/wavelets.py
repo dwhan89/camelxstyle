@@ -1,4 +1,4 @@
-# Note that: code implementation is heavily borrowed from https://giters.com/rosinality/stylegan2-pytorch
+# Note: code implementation is heavily borrowed from https://giters.com/rosinality/stylegan2-pytorch
 
 import torch
 import torch.nn as nn
