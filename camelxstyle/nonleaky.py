@@ -5,8 +5,8 @@ import torch
 from torch import autograd
 from torch.nn import functional as F
 
-from distributed import reduce_sum
-from op import upfirdn2d
+from camelxstyle.distributed import reduce_sum
+from camelxstyle.op import upfirdn2d
 
 
 class AdaptiveAugment:
