@@ -1,16 +1,17 @@
 # Code borrowed from https://github.com/rosinality/stylegan2-pytorch
 
 import math
+import random
+
 import torch
+import tqdm
 from torch import autograd
 from torch.nn import functional as F
+from torchvision import utils
 
-import random
-from camelxstyle.op import conv2d_gradfix
 from camelxstyle.distributed import get_rank, reduce_sum, get_world_size, reduce_loss_dict
 from camelxstyle.nonleaky import augment, AdaptiveAugment
-from torchvision import transforms, utils
-import tqdm
+from camelxstyle.op import conv2d_gradfix
 
 try:
     import wandb
@@ -18,6 +19,7 @@ except ImportError:
     wandb = None
 
 wandb.init(project="camelxstyle", entity="dwhan89")
+
 
 def sample_data(loader):
     while True:

@@ -4,7 +4,6 @@ import math
 import torch
 from torch import autograd
 from torch.nn import functional as F
-import numpy as np
 
 from distributed import reduce_sum
 from op import upfirdn2d
@@ -399,8 +398,8 @@ def random_apply_affine(img, p, G=None, antialiasing_kernel=SYM6):
     )
 
     G_inv = (
-        translate_mat_single((pad_x1 - pad_x2).item() / 2, (pad_y1 - pad_y2).item() / 2)
-        @ G
+            translate_mat_single((pad_x1 - pad_x2).item() / 2, (pad_y1 - pad_y2).item() / 2)
+            @ G
     )
     up_pad = (
         (len_k + 2 - 1) // 2,
@@ -416,9 +415,9 @@ def random_apply_affine(img, p, G=None, antialiasing_kernel=SYM6):
     pad_k = len_k // 4
     shape = (batch_size, channel, (height + pad_k * 2) * 2, (width + pad_k * 2) * 2)
     G_inv = (
-        scale_mat_single(2 / img_2x.shape[3], 2 / img_2x.shape[2])
-        @ G_inv
-        @ scale_mat_single(1 / (2 / shape[3]), 1 / (2 / shape[2]))
+            scale_mat_single(2 / img_2x.shape[3], 2 / img_2x.shape[2])
+            @ G_inv
+            @ scale_mat_single(1 / (2 / shape[3]), 1 / (2 / shape[2]))
     )
     grid = F.affine_grid(G_inv[:, :2, :].to(img_2x), shape, align_corners=False)
     img_affine = grid_sample(img_2x, grid)

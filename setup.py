@@ -2,19 +2,19 @@
 # -*- coding: utf-8 -*-
 
 """The setup script."""
-import setuptools
-from numpy.distutils.core import setup, Extension, build_ext, build_src
-import versioneer
-import os, sys
+import os
+
+from numpy.distutils.core import setup
+
 import versioneer
 
-requirements =  ['numpy>=1.16',
-                 'astropy>=2.0',
-                 'setuptools>=39',
-                 'scipy>=1.0',
-                 'matplotlib>=2.0'
-                 ]
-    
+requirements = ['numpy>=1.16',
+                'astropy>=2.0',
+                'setuptools>=39',
+                'scipy>=1.0',
+                'matplotlib>=2.0'
+                ]
+
 fcflags = os.getenv('FCFLAGS')
 
 setup(
@@ -36,13 +36,13 @@ setup(
     },
     ext_modules=[
     ],
-    include_dirs = [],
-    library_dirs = [],
+    include_dirs=[],
+    library_dirs=[],
     install_requires=requirements,
-    extras_require = {},
+    extras_require={},
     license="BSD license",
     package_data={},
-    include_package_data=True,    
+    include_package_data=True,
     data_files=[],
     keywords='camelxstyle',
     name='camelxstyle',
@@ -52,4 +52,3 @@ setup(
 )
 
 print('\n[setup.py request was successful.]')
-

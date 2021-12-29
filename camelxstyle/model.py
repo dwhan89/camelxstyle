@@ -1,8 +1,10 @@
 # Note: code implementation is heavily borrowed from https://giters.com/rosinality/stylegan2-pytorch
 import math
+
 import torch
 from torch import nn
 from torch.nn import functional as F
+
 from op import FusedLeakyReLU, fused_leaky_relu, upfirdn2d, conv2d_gradfix
 
 
@@ -20,6 +22,7 @@ class PixelNorm(nn.Module):
 
     def forward(self, input):
         return input * torch.rsqrt(torch.mean(input ** 2, dim=1, keepdim=True) + 1e-8)
+
 
 class Blur(nn.Module):
     def __init__(self, kernel, pad, upsample_factor=1):
@@ -117,6 +120,7 @@ class Downsample(nn.Module):
         out = upfirdn2d(input, self.kernel, up=1, down=self.factor, pad=self.pad)
 
         return out
+
 
 class ModulatedConv2d(nn.Module):
     def __init__(
@@ -251,6 +255,7 @@ class ModulatedConv2d(nn.Module):
 
         return out
 
+
 class ConstantInput(nn.Module):
     def __init__(self, channel, size=4):
         super().__init__()
@@ -262,6 +267,7 @@ class ConstantInput(nn.Module):
         out = self.input.repeat(batch, 1, 1, 1)
 
         return out
+
 
 class NoiseInjection(nn.Module):
     def __init__(self):
@@ -276,16 +282,17 @@ class NoiseInjection(nn.Module):
 
         return image + self.weight * noise
 
+
 class StyledConv(nn.Module):
     def __init__(
-        self,
-        in_channel,
-        out_channel,
-        kernel_size,
-        style_dim,
-        upsample=False,
-        blur_kernel=[1, 3, 3, 1],
-        demodulate=True,
+            self,
+            in_channel,
+            out_channel,
+            kernel_size,
+            style_dim,
+            upsample=False,
+            blur_kernel=[1, 3, 3, 1],
+            demodulate=True,
     ):
         super().__init__()
 
@@ -312,9 +319,10 @@ class StyledConv(nn.Module):
 
         return out
 
+
 class EqualConv2d(nn.Module):
     def __init__(
-        self, in_channel, out_channel, kernel_size, stride=1, padding=0, bias=True
+            self, in_channel, out_channel, kernel_size, stride=1, padding=0, bias=True
     ):
         super().__init__()
 
@@ -349,16 +357,17 @@ class EqualConv2d(nn.Module):
             f" {self.weight.shape[2]}, stride={self.stride}, padding={self.padding})"
         )
 
+
 class ConvLayer(nn.Sequential):
     def __init__(
-        self,
-        in_channel,
-        out_channel,
-        kernel_size,
-        downsample=False,
-        blur_kernel=[1, 3, 3, 1],
-        bias=True,
-        activate=True,
+            self,
+            in_channel,
+            out_channel,
+            kernel_size,
+            downsample=False,
+            blur_kernel=[1, 3, 3, 1],
+            bias=True,
+            activate=True,
     ):
         layers = []
 
