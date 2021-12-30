@@ -193,23 +193,23 @@ Project Link: [https://github.com/dwhan89/camelxstyle](https://github.com/dwhan8
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/dwhan89/camelxstyle.svg?style=for-the-badge
 
 [contributors-url]: https://github.com/dwhan89/camelxstyle/graphs/contributors
 
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/dwhan89/camelxstyle.svg?style=for-the-badge
 
-[forks-url]: https://github.com/dwhan89/camelxstyle//network/members
+[forks-url]: https://github.com/dwhan89/camelxstyle/network/members
 
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/dwhan89/camelxstyle.svg?style=for-the-badge
 
 [stars-url]: https://github.com/dwhan89/camelxstyle/stargazers
 
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/dwhan89/camelxstyle.svg?style=for-the-badge
 
 [issues-url]: https://github.com/dwhan89/camelxstyle/issues
 
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/dwhan89/camelxstyle.svg?style=for-the-badge
 
 [license-url]: https://github.com/dwhan89/camelxstyle/blob/master/LICENSE.txt
 
