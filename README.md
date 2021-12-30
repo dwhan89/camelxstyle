@@ -28,23 +28,13 @@
 <br />
 <p align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/pexels-simon-berger-camels.jpg" alt="Logo" height="120">
   </a>
 
-<h3 align="center">Best-README-Template</h3>
+<h3 align="center">CAMEL X STYLE</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
-  </p>
+    Style-Based GAN network trained with CAMEL Multi-field Dataset 
 </p>
 
 
@@ -176,8 +166,17 @@ contributions you make are **greatly appreciated**.
 <!-- LICENSE -->
 
 ## License
+* Core implementation is from an excellent work by [rosinality](https://github.com/rosinality) and can be found at https://github.com/rosinality/stylegan2-pytorch
 
-Distributed under the MIT License. See `LICENSE` for more information.
+* Custom CUDA kernel codes are from StyleGAN2 official repostiories: https://github.com/NVlabs/stylegan2
+
+* Official SWAGAN implementation can be found at https://github.com/rinongal/swagan
+
+* CAMEL cosmological simulations can be found at https://www.camel-simulations.org/data
+
+* README template is from https://github.com/othneildrew/Best-README-Template
+
+* Any tweaks I made is distributed under the MIT License. See `LICENSE` for more information.
 
 
 
@@ -185,53 +184,37 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Your Name - [@dwhan89](https://twitter.com/dwhan89) - dongwon.han@stonybrook.edu
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Project Link: [https://github.com/dwhan89/camelxstyle](https://github.com/dwhan89/camelxstyle)
 
 
-
-<!-- ACKNOWLEDGEMENTS -->
-
-## Acknowledgements
-
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Img Shields](https://shields.io)
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Pages](https://pages.github.com)
-* [Animate.css](https://daneden.github.io/animate.css)
-* [Loaders.css](https://connoratherton.com/loaders)
-* [Slick Carousel](https://kenwheeler.github.io/slick)
-* [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
-* [Sticky Kit](http://leafo.net/sticky-kit)
-* [JVectorMap](http://jvectormap.com)
-* [Font Awesome](https://fontawesome.com)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
 
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
+[contributors-url]: https://github.com/dwhan89/camelxstyle/graphs/contributors
 
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
 
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
+[forks-url]: https://github.com/dwhan89/camelxstyle//network/members
 
 [stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
 
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
+[stars-url]: https://github.com/dwhan89/camelxstyle/stargazers
 
 [issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
 
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
+[issues-url]: https://github.com/dwhan89/camelxstyle/issues
 
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[license-url]: https://github.com/dwhan89/camelxstyle/blob/master/LICENSE.txt
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 
-[linkedin-url]: https://linkedin.com/in/othneildrew
+[linkedin-url]: https://www.linkedin.com/in/dwhan89/
 
 [product-screenshot]: images/screenshot.png
