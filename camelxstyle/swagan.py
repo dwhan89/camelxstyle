@@ -42,9 +42,9 @@ class FromFields(nn.Module):
         self.downsample = downsample
 
         if downsample:
-            self.iwt = InverseHaarTransform(3)
+            self.iwt = InverseHaarTransform()
             self.downsample = Downsample(blur_kernel)
-            self.dwt = HaarTransform(3)
+            self.dwt = HaarTransform()
 
         self.conv = ConvLayer(3 * 4, out_channel, 3)
 
@@ -271,7 +271,7 @@ class Discriminator(nn.Module):
             1024: 16 * channel_multiplier,
         }
 
-        self.dwt = HaarTransform(3)
+        self.dwt = HaarTransform()
 
         self.from_fields = nn.ModuleList()
         self.convs = nn.ModuleList()

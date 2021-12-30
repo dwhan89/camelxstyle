@@ -3,7 +3,7 @@
 import torch
 import torch.nn as nn
 
-from op import upfirdn2d
+from camelxstyle.op import upfirdn2d
 
 
 class HaarTransform(nn.Module):
